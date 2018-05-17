@@ -99,6 +99,29 @@ function moveRental(id){
 }
 
 /**
+ * Lists all rentals in the provided folder. Folder should be 'open', 'closed' or 'all'
+ * @param {String} folder 
+ */
+function listRentals(folder){
+    //Input sanitizing
+    if(!folder) folder = "all";
+    if(folder != "open" && folder != "closed" && folder != "all"){
+        return console.error("Unrecognized folder. Are you hacking me?");
+    }
+
+    //Create the message object
+    const message = {
+        "folder": folder
+    };
+
+    //Now acutally message the back-end
+    messageBackend("list", message,  function(response){
+        const data = JSON.parse(response);
+        console.log(data);
+    });
+}
+
+/**
  * Sends the provided action and message to the backend
  * @param {String} action 
  * @param {Object} message 

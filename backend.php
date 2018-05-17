@@ -19,12 +19,18 @@ switch($action){
         move($data);
         break;
     case 'list':
+        listAll($data);
         break;
     default:
         exit("This action ($action) was not recognized. Ignored.");
         break;
 };
+//If we haven't exited before now, please do so now
+exit();
 
+/**
+ * Moves a file between the open and closed folder, or back.
+ */
 function move($saveData){
     //First check the provided data
     if(!array_key_exists('id', $saveData)){
@@ -117,4 +123,83 @@ function save($saveData){
     //Test if the result was succesful
     if($result === FALSE) echo "The rental could not be saved.";
     else echo "The rental with id($id) has been succesfully saved";
-}   
+}
+
+/**
+ * Lists all the possible files found, use the params to filter
+ */
+function listAll($saveData){
+    //First do the input sanitizing
+    if(!array_key_exists('folder',$saveData)){
+        exit("No folder data was set");
+    }
+
+    //Now we can extract the folder data
+    $folder = $saveData['folder'];
+
+    //Check if it is not an illegal option
+    if($folder != "all" && $folder != "open" && $folder != "closed"){
+        exit("Unsafe folder setting. Aborting listing. Are you hacking me?");
+    }
+
+    //Now, depending on the folder setting, list all files in it
+    $openFiles = array();
+    $closedFiles = array();
+    if($folder == "open" || $folder == "all") $openFiles = scandir("data/open/");
+    foreach($openFiles as $key => $file){
+        $openFiles[$key] = "data/open/$file";
+    }
+    if($folder == "closed" || $folder == "all") $closedFiles = scandir("data/closed/");
+    foreach($closedFiles as $key => $file){
+        $closedFiles[$key] = "data/closed/$file";
+    }
+    
+
+    //Now merge the lists
+    $allFiles = array_merge($openFiles, $closedFiles);
+
+    //Only list .rental files
+    $files = array();
+    foreach($allFiles as $file){
+        if(strpos($file, 'rental') !== false){
+            $files[] = $file;
+        }
+    }
+
+    //For each file, create an object and add it to the result list
+    $rentals = array();
+    foreach($files as $file){
+        $rentals[] = readRental($file);
+    }
+
+    //Send back the rentals, encoded as JSON
+    echo json_encode($rentals);
+}
+
+/**
+ * Returns the PHP object representation of the passed $filename rental
+ */
+function readRental($fileName){
+    //Prep the result object
+    $rental = array();
+    //First get the data and split it by line
+    $data = file_get_contents($fileName);
+    $lines = explode("\n", $data);
+    //For every line, split it by the equals sign
+    foreach($lines as $line){
+        $parts = explode("=", $line);
+        //The first part is the key, the second is the value
+        $rental[$parts[0]] = $parts[1];
+    }
+    //Set the id of the rental that has been parsed
+    $rental['id'] = (int) str_replace("data/closed/", "", str_replace("data/open/", "", str_replace(".rental", "", $fileName)));
+
+    //Set the warning level to be a number too
+    $rental['warning'] = (int) $rental['warning'];
+
+    //Parse the items back into an array
+    $rental['items'] = explode(",", $rental['items']);
+
+    //Now return the result
+    return $rental;
+}
