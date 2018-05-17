@@ -46,6 +46,23 @@ function saveRental(id, items, startDate, endDate, warning, comment){
 }
 
 /**
+ * Deletes the rental with the provided id from the disk. At least , communicate this with 
+ * the back-end server
+ * @param {Number} id 
+ */
+function deleteRental(id){
+    //Create the message object
+    const message = {
+        "id": id
+    };
+    
+    //Now acutally message the back-end
+    messageBackend("del", message,  function(response){
+        console.log(response);
+    });
+}
+
+/**
  * Sends the provided action and message to the backend
  * @param {String} action 
  * @param {Object} message 

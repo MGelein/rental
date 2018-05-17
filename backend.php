@@ -13,6 +13,7 @@ switch($action){
         save($data);
         break;
     case 'del':
+        delete($data);
         break;
     case 'move':
         break;
@@ -22,6 +23,34 @@ switch($action){
         exit("This action ($action) was not recognized. Ignored.");
         break;
 };
+
+/**
+ * Removes the rental object that has the provided id
+ */
+function delete($saveData){
+    //First check the provided data
+    if(!array_key_exists('id', $saveData)){
+        exit("Can't delete without a provided id parameter");
+    }
+    //Now extract the id info
+    $id = $saveData['id'];
+
+    //Now check both the open and closed folder, if so, remove
+    if(file_exists("data/open/$id.rental")){
+        if(unlink("data/open/$id.rental")){
+            echo "Succesfully removed data/open/$id.rental";
+        }else{
+            echo "Could not remove data/open/$id.rental";
+        }
+    }
+    if(file_exists("data/closed/$id.rental")) {
+        if(unlink("data/closed/$id.rental")){
+            echo "Succesfully removed data/closed/$id.rental";
+        }else{
+            echo "Could not remove data/closed/$id.rental";
+        }
+    }
+}
 
 /**
  * Saves using the provided data object, saving is always done in the open folder
@@ -53,5 +82,9 @@ function save($saveData){
     //Now that we have all the data, save it to the disk
     $fileName = "data/open/$id.rental";
     $fileData = "startDate=$startDate\nendDate=$endDate\nwarning=$warning\nitems=$items\ncomment=$comment";
-    file_put_contents($fileName, $fileData);
-}
+    $result = file_put_contents($fileName, $fileData);
+
+    //Test if the result was succesful
+    if($result === FALSE) echo "The rental could not be saved.";
+    else echo "The rental with id($id) has been succesfully saved";
+}   
