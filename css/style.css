@@ -17,6 +17,16 @@ BOOTSTRAP OVERRIDES
 CUSTOM CLASSES
 **/
 
+.header{
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #999;
+    border-right: 1px solid #999;
+    overflow: hidden;
+    text-align: center;
+    padding: 4px;
+}
+
 /**
 ID's
 **/
@@ -25,4 +35,24 @@ ID's
     margin: 0;
     padding: 1em;
     border-bottom: 1px solid #aaa;
+}
+
+#searchHolder{
+    width: 100%;
+    margin-top: 1em;
+}
+
+#search{
+    font-size: 1.5em;
+    display: inline;
+}
+
+#searchIcon{
+    margin: 0.3em;
+    margin-left: 1em;
+}
+
+#rentalOverview{
+    padding: 0.5em;
+    width: 100%;
 }

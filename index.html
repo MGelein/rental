@@ -22,7 +22,8 @@
 	<!-- the top control bar-->
 	<div id="topBar">
 		<div class="container">
-			<button type="button" class="btn btn-lg btn-primary"><i class="fas fa-plus-square"></i>&nbsp;Nieuw</button>
+			<button type="button" class="btn btn-lg btn-primary">
+				<i class="fas fa-plus-square"></i>&nbsp;Nieuw</button>
 		</div>
 	</div>
 
@@ -30,13 +31,44 @@
 	<div id="main" class="container-fluid">
 		<div class="row">
 			<div id="left" class="col-md-2">
-				Test
+
 			</div>
 			<div id="center" class="col-md-8">
-				A
+
+				<!-- Search Bar -->
+				<div id="searchHolder" class="row">
+					<div class="col-sm-1">
+						<i id="searchIcon" class="fas fa-2x fa-search"></i>
+					</div>
+					<div class="col-sm-11">
+						<input id="search" type="text" class="form-control" placeholder="Type hier je zoekopdracht">
+					</div>
+				</div>
+
+				<!-- Rental overview -->
+				<div id="rentalOverview">
+					<div id="rentalOverviewHeader" class="row">
+						<div class="col-sm-2 header" id="idHeader">
+							<i class="fas fa-list-ol fa-2x" data-toggle="tooltip" title="Verhuurnummer"></i>
+						</div>
+						<div class="col-sm-2 header" id="startDateHeader">
+							<i class="far fa-calendar-alt fa-2x" data-toggle="tooltip" title="Verhuurdatum"></i>
+						</div>
+						<div class="col-sm-2 header" id="endDateHeader">
+							<i class="fas fa-calendar-alt fa-2x" data-toggle="tooltip" title="Inleverdatum"></i>
+						</div>
+						<div class="col-sm-4 header" id="itemsHeader">
+							<i class="fas fa-bicycle fa-2x" data-toggle="tooltip" title="Verhuurde Items"></i>
+						</div>
+						<div class="col-sm-2 header" id="warningHeader">
+							<i class="fas fa-exclamation-triangle fa-2x" data-toggle="tooltip" title="Waarschuwing"></i>
+						</div>
+					</div>
+				</div>
+
 			</div>
 			<div id="right" class="col-md-2">
-				B
+
 			</div>
 		</div>
 	</div>
