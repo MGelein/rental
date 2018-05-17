@@ -6,9 +6,7 @@ $(document).ready(function(){
     //Prevent caching of Ajax requests
     $.ajaxSetup({cache: false});
 
-    //Do a sample Ajax request
-    var data = {action: 'test'};
-    $.post('backend.php', data, function(response){
-        console.log(response);
-    });
+
+    //Try to save a test rental
+    saveRental(12001, ["B01", "B02"], "12-01-12", "12-02-12", 0, "No Comment");
 });

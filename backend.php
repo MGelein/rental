@@ -4,10 +4,13 @@ filter_var_array($_POST, FILTER_SANITIZE_STRING);
 
 //Get the action we're trying to do here
 $action = $_POST['action'];
+//Grab the data component, this should always be an object
+$data = $_POST['data'];
 
 //Switch based on the action, forward the data to the correct method
 switch($action){
     case 'save':
+        save($data);
         break;
     case 'del':
         break;
@@ -19,3 +22,36 @@ switch($action){
         exit("This action ($action) was not recognized. Ignored.");
         break;
 };
+
+/**
+ * Saves using the provided data object, saving is always done in the open folder
+ */
+function save($saveData){
+    //Input checking and validation
+    if(!array_key_exists('id', $saveData)){
+        exit("Can't save without a provided id parameter");
+    }else if(!array_key_exists('warning', $saveData)){
+        exit("Can't save without a provided warning parameter");
+    }else if(!array_key_exists('startDate', $saveData)){
+        exit("Can't save without a provided startDate parameter");
+    }else if(!array_key_exists('endDate', $saveData)){
+        exit("Can't save without a provided endDate parameter");
+    }else if(!array_key_exists('items', $saveData)){
+        exit("Can't save without a provided items parameter");
+    }else if(!array_key_exists('comment', $saveData)){
+        exit("Can't save without a provided comment parameter");
+    }
+
+    //Now grab all the data
+    $id = $saveData['id'];
+    $warning = $saveData['warning'];
+    $comment = $saveData['comment'];
+    $endDate = $saveData['endDate'];
+    $startDate = $saveData['startDate'];
+    $items = implode(",", $saveData['items']);
+
+    //Now that we have all the data, save it to the disk
+    $fileName = "data/open/$id.rental";
+    $fileData = "startDate=$startDate\nendDate=$endDate\nwarning=$warning\nitems=$items\ncomment=$comment";
+    file_put_contents($fileName, $fileData);
+}
