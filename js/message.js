@@ -55,9 +55,36 @@ function deleteRental(id){
     const message = {
         "id": id
     };
-    
+
     //Now acutally message the back-end
     messageBackend("del", message,  function(response){
+        console.log(response);
+    });
+}
+
+/**
+ * Shorthand form to move files en-masse with an array of id numbers
+ * @param {Array} ids 
+ */
+function moveRentals(ids){
+    $.each(ids, function(index, value){
+        moveRental(value);
+    });
+}
+
+/**
+ * Moves the rental with the provided id from either the open or the closed folder to the other folder.
+ * Works two ways round, basically being a 'close' and 'reopen' option.
+ * @param {Number} id 
+ */
+function moveRental(id){
+    //Create the message object
+    const message = {
+        "id": id
+    };
+
+    //Now acutally message the back-end
+    messageBackend("move", message,  function(response){
         console.log(response);
     });
 }

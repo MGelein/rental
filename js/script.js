@@ -5,6 +5,4 @@
 $(document).ready(function(){
     //Prevent caching of Ajax requests
     $.ajaxSetup({cache: false});
-
-    deleteRental(12002);
 });

@@ -16,6 +16,7 @@ switch($action){
         delete($data);
         break;
     case 'move':
+        move($data);
         break;
     case 'list':
         break;
@@ -23,6 +24,35 @@ switch($action){
         exit("This action ($action) was not recognized. Ignored.");
         break;
 };
+
+function move($saveData){
+    //First check the provided data
+    if(!array_key_exists('id', $saveData)){
+        exit("Can't delete without a provided id parameter");
+    }
+    //Now extract the id info
+    $id = $saveData['id'];
+
+    //Now create the two file URLS
+    $fileA = "data/open/$id.rental";
+    $fileB = "data/closed/$id.rental";
+
+    //Depending on which file exists, move it to the other folder using rename
+    if(file_exists($fileA) && file_exists($fileB)){
+        //If both files exists, we have a duplicate, remove the open one
+        unlink($fileA);
+        echo "Duplicate files were found. Removed the 'open' copy ($fileA)";
+    }else if(file_exists($fileA)){
+        rename($fileA, $fileB);
+        echo "Succesfully renamed $fileA to $fileB";
+    }else if(file_exists($fileB)){
+        rename($fileB, $fileA);
+        echo "Succesfully renamed $fileB to $fileA";
+    }else{
+        //If neither file exists, report this back to the frontend and continue
+        echo "Cannot move a none existing file ($fileA, $fileB)";
+    }
+}
 
 /**
  * Removes the rental object that has the provided id
