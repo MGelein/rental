@@ -46,6 +46,15 @@ function saveRental(id, items, startDate, endDate, warning, comment){
 }
 
 /**
+ * Shorthand form to delete files en-masse with an array of id-numbers
+ */
+function deleteRentals(ids){
+    $.each(ids, function(index, value){
+        deleteRental(value);
+    });
+}
+
+/**
  * Deletes the rental with the provided id from the disk. At least , communicate this with 
  * the back-end server
  * @param {Number} id 
