@@ -58,6 +58,9 @@ function move($saveData){
         //If neither file exists, report this back to the frontend and continue
         echo "Cannot move a none existing file ($fileA, $fileB)";
     }
+
+    //Now update the timeStamp;
+    updateTimeStamp();
 }
 
 /**
@@ -86,6 +89,9 @@ function delete($saveData){
             echo "Could not remove data/closed/$id.rental";
         }
     }
+
+    //Now update the timestamp
+    updateTimeStamp();
 }
 
 /**
@@ -123,6 +129,18 @@ function save($saveData){
     //Test if the result was succesful
     if($result === FALSE) echo "The rental could not be saved.";
     else echo "The rental with id($id) has been succesfully saved";
+
+    //Now update the timestamp
+    updateTimeStamp();
+}
+
+/**
+ * Updates the timestamp once a modification to the rentals database has been made
+ */
+function updateTimeStamp(){
+    //Update the timestamp file
+    $milliseconds = round(microtime(true) * 1000);
+    file_put_contents('data/timestamp.txt', $milliseconds);
 }
 
 /**
