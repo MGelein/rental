@@ -194,6 +194,9 @@ function readRental($fileName){
     //Set the id of the rental that has been parsed
     $rental['id'] = (int) str_replace("data/closed/", "", str_replace("data/open/", "", str_replace(".rental", "", $fileName)));
 
+    //Set the state of the rental, according to the folder it's found in
+    $rental['state'] = (strpos($fileName, 'closed') !== false) ? "closed" : "open";
+
     //Set the warning level to be a number too
     $rental['warning'] = (int) $rental['warning'];
 
