@@ -30,10 +30,16 @@ CUSTOM CLASSES
 /**
 ID's
 **/
+#rentalList{
+    width: 100%;
+    height: 70vh;
+    overflow-y: scroll;
+}
+
 #topBar{
     width: 100vw;
     margin: 0;
-    padding: 1em;
+    padding: 0.5em;
     border-bottom: 1px solid #aaa;
 }
 

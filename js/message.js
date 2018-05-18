@@ -101,8 +101,9 @@ function moveRental(id){
 /**
  * Lists all rentals in the provided folder. Folder should be 'open', 'closed' or 'all'
  * @param {String} folder 
+ * @param {Function} callback the function to call once the data has been received. Contains the parsed JSON data as param
  */
-function listRentals(folder){
+function listRentals(folder, callback){
     //Input sanitizing
     if(!folder) folder = "all";
     if(folder != "open" && folder != "closed" && folder != "all"){
@@ -116,8 +117,7 @@ function listRentals(folder){
 
     //Now acutally message the back-end
     messageBackend("list", message,  function(response){
-        const data = JSON.parse(response);
-        console.log(data);
+        callback(JSON.parse(response));
     });
 }
 
